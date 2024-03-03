@@ -28,6 +28,8 @@ public class ArrayList<E> extends AbstractList<E>
      */
     private int size;
 
+    //构造方法有三个，分别是无参构造方法，带初始容量参数的构造方法，带集合参数的构造方法
+
     /**
      * 带初始容量参数的构造函数（用户可以在创建ArrayList对象时自己指定集合的初始大小）
      */
@@ -56,7 +58,7 @@ public class ArrayList<E> extends AbstractList<E>
     /**
      * 构造一个包含指定集合的元素的列表，按照它们由集合的迭代器返回的顺序。
      */
-    public ArrayList(Collection<? extends E> c) {
+    public ArrayList(Collection<? extends E> c) {  //Collection<? extends E> c 代表可以接受任何继承自E的集合, E是泛型
         //将指定集合转换为数组
         elementData = c.toArray();
         //如果elementData数组的长度不为0
@@ -91,7 +93,7 @@ public class ArrayList<E> extends AbstractList<E>
      *
      * @param minCapacity 所需的最小容量
      */
-    public void ensureCapacity(int minCapacity) {
+    public void ensureCapacity(int minCapacity) {  //给用户提供的扩容方法，用户调用这个方法的时候，可以手动的增加ArrayList的容量
         //如果是true，minExpand的值为0，如果是false,minExpand的值为10
         int minExpand = (elementData != DEFAULTCAPACITY_EMPTY_ELEMENTDATA)
                 // any size if not default element table
@@ -109,22 +111,22 @@ public class ArrayList<E> extends AbstractList<E>
     private static int calculateCapacity(Object[] elementData, int minCapacity) {
         // 如果当前数组元素为空数组（初始情况），返回默认容量和最小容量中的较大值作为所需容量
         if (elementData == DEFAULTCAPACITY_EMPTY_ELEMENTDATA) {
-            return Math.max(DEFAULT_CAPACITY, minCapacity);
+            return Math.max(DEFAULT_CAPACITY, minCapacity);  //返回10和minCapacity中的较大值
         }
         // 否则直接返回最小容量
         return minCapacity;
     }
 
     // 确保内部容量达到指定的最小容量。
-    private void ensureCapacityInternal(int minCapacity) {
-        ensureExplicitCapacity(calculateCapacity(elementData, minCapacity));
+    private void ensureCapacityInternal(int minCapacity) { //minCapacity为需要的最小容量,是size+1，也就是说要确保能够添加一个元素
+        ensureExplicitCapacity(calculateCapacity(elementData, minCapacity)); //调用ensureExplicitCapacity方法
     }
 
     //判断是否需要扩容
     private void ensureExplicitCapacity(int minCapacity) {
-        modCount++;
+        modCount++;  //modCount是用来记录ArrayList被修改的次数
         // overflow-conscious code
-        if (minCapacity - elementData.length > 0)
+        if (minCapacity - elementData.length > 0) //如果所需的最小容量大于当前数组的长度
             //调用grow方法进行扩容，调用此方法代表已经开始扩容了
             grow(minCapacity);
     }
@@ -152,7 +154,7 @@ public class ArrayList<E> extends AbstractList<E>
         if (newCapacity - MAX_ARRAY_SIZE > 0)
             newCapacity = hugeCapacity(minCapacity);
         // minCapacity is usually close to size, so this is a win:
-        elementData = Arrays.copyOf(elementData, newCapacity);
+        elementData = Arrays.copyOf(elementData, newCapacity);  //申请了一个新的数组，将原数组的内容复制到新数组中，调用的是System.arraycopy()方法
     }
 
     //比较minCapacity和 MAX_ARRAY_SIZE
@@ -160,8 +162,8 @@ public class ArrayList<E> extends AbstractList<E>
         if (minCapacity < 0) // overflow
             throw new OutOfMemoryError();
         return (minCapacity > MAX_ARRAY_SIZE) ?
-                Integer.MAX_VALUE :
-                MAX_ARRAY_SIZE;
+                Integer.MAX_VALUE :  //因为MAX_ARRAY_SIZE是一个很大的数，所以minCapacity大于MAX_ARRAY_SIZE时，直接返回Integer.MAX_VALUE
+                MAX_ARRAY_SIZE;  //否则返回MAX_ARRAY_SIZE
     }
 
     /**
@@ -297,7 +299,7 @@ public class ArrayList<E> extends AbstractList<E>
      * 将指定的元素追加到此列表的末尾。
      */
     public boolean add(E e) {
-        ensureCapacityInternal(size + 1);  // Increments modCount!!
+        ensureCapacityInternal(size + 1);  // 这里是关键，确保容量足够大,如果不够大，就扩容，如果够大，就不扩容
         //这里看到ArrayList添加元素的实质就相当于为数组赋值
         elementData[size++] = e;
         return true;
@@ -457,23 +459,24 @@ public class ArrayList<E> extends AbstractList<E>
         return "Index: " + index + ", Size: " + size;
     }
 
+
     /**
      * 从此列表中删除指定集合中包含的所有元素。
      */
-    public boolean removeAll(Collection<?> c) {
-        Objects.requireNonNull(c);
-        //如果此列表被修改则返回true
-        return batchRemove(c, false);
-    }
+//    public boolean removeAll(Collection<?> c) {
+//        Objects.requireNonNull(c);
+//        //如果此列表被修改则返回true
+//        return batchRemove(c, false);
+//    }
 
     /**
      * 仅保留此列表中包含在指定集合中的元素。
      * 换句话说，从此列表中删除其中不包含在指定集合中的所有元素。
      */
-    public boolean retainAll(Collection<?> c) {
-        Objects.requireNonNull(c);
-        return batchRemove(c, true);
-    }
+//    public boolean retainAll(Collection<?> c) {
+//        Objects.requireNonNull(c);
+//        return batchRemove(c, true);
+//    }
 
 
     /**
@@ -481,24 +484,25 @@ public class ArrayList<E> extends AbstractList<E>
      * 指定的索引表示初始调用将返回的第一个元素为next 。 初始调用previous将返回指定索引减1的元素。
      * 返回的列表迭代器是fail-fast 。
      */
-    public ListIterator<E> listIterator(int index) {
-        if (index < 0 || index > size)
-            throw new IndexOutOfBoundsException("Index: " + index);
-        return new ListItr(index);
-    }
+//    public ListIterator<E> listIterator(int index) {
+//        if (index < 0 || index > size)
+//            throw new IndexOutOfBoundsException("Index: " + index);
+//        return new ListItr(index);
+//    }
 
     /**
      * 返回列表中的列表迭代器（按适当的顺序）。
      * 返回的列表迭代器是fail-fast 。
      */
-    public ListIterator<E> listIterator() {
-        return new ListItr(0);
-    }
+//    public ListIterator<E> listIterator() {
+//        return new ListItr(0);
+//    }
 
     /**
      * 以正确的顺序返回该列表中的元素的迭代器。
      * 返回的迭代器是fail-fast 。
      */
-    public Iterator<E> iterator() {
-        return new Itr();
-    }
+//    public Iterator<E> iterator() {
+//        return new Itr();
+//    }
+}

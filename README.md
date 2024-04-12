@@ -6,15 +6,36 @@
 
 - ThreadLocal
 
+## JVM
+
 - Garbage Collection (GCTest)
 
   JDK17默认的垃圾回收器是G1
+
+- 线程执行过程（SimpleThreadExample）
+
+  1. 新建状态 (New)
+  2. 就绪状态 (Runnable)
+  3. 运行状态 (Running)
+  4. 阻塞状态 (Blocked)
+  5. 等待状态 (Waiting)
+  6. 超时等待状态 (Timed Waiting)
+  7. 终止状态 (Terminated)
 
 
 ## JAVA集合
 
 - ArrayList
+
+    底层实现是数组，查询快，增删慢。扩容时，新数组的大小是原数组的1.5倍。
+
 - HashMap
+
+    JDK8之前，HashMap是数组+链表的结构，JDK8之后，HashMap是数组+链表+红黑树的结构。
+    
+    HashMap的扩容机制是当HashMap的size超过了threshold时，会进行扩容。扩容时，会将原数组中的元素重新计算hash值，然后放入新数组中。
+    
+    HashMap的负载因子默认是0.75，当HashMap的size超过了threshold * loadFactor时，会进行扩容。
 
 ## 深度学习
 

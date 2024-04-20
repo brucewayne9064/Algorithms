@@ -4,7 +4,7 @@
 
 HashMap 主要用来存放键值对，它基于哈希表的 Map 接口实现，是常用的 Java 集合之一，是非线程安全的。
 
-HashMap 可以存储 null 的 key 和 value，但 null 作为键只能有一个，null 作为值可以有多个。
+HashMap 可以存储 null 的 value，null 作为值可以有多个。
 
 JDK1.8 之前 HashMap 由 数组+链表 组成的，数组是 HashMap 的主体，链表则是主要为了解决哈希冲突而存在的（“拉链法”解决冲突）。 
 
